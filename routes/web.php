@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/websites', [WebsiteController::class, 'index'])->name('websites.index');
-    Route::get('/websites/create', [WebsiteController::class, 'create'])->name('websites.create');
-    Route::post('/websites', action: [WebsiteController::class, 'store'])->name('websites.store');
-    Route::delete('/websites/{website}', [WebsiteController::class, 'destroy'])->name('websites.destroy');
+    Route::get('/websites-list', [WebsiteController::class, 'index'])->name('websites.list');
+    Route::get('/websites-create', [WebsiteController::class, 'create'])->name('websites.createTracker');
+    Route::post('/websites-store', [WebsiteController::class, 'store'])->name('websites.store');
+    Route::post('/website-update/{id}', [WebsiteController::class, 'update'])->name('websites.update');
+    Route::delete('/website-delete/{id}', [WebsiteController::class, 'destroy'])->name('websites.destroy');
 });
-
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

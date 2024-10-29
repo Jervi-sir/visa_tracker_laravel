@@ -1,0 +1,24 @@
+- create necessary databse @done
+- create necessary relationships @done
+- dashboard @done
+  - list table @done
+  - list status @done
+  - list card of websites @done
+
+- create new website @done
+- handle if website already exists @done
+- handle if user reached the limit @done
+- delete website @done
+- make the dashboard responsive with the updated data @done
+- subscription page
+- manage subscription
+- authenticate @done
+- authenticate with telegram
+- show user data @done
+  - change password if i wont use telegram auth
+
+- do broadcast system with the website
+- do broadcast system to the telegram bot to send notifications
+- do the background task to check the site availability @done
+- responsive table
+- 

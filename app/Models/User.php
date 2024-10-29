@@ -51,6 +51,7 @@ class User extends Authenticatable
     public function websites()
     {
         return $this->belongsToMany(Website::class, 'user_websites')
-                    ->withTimestamps();
+            ->withPivot(['id', 'website_name'])
+            ->withTimestamps();
     }
 }

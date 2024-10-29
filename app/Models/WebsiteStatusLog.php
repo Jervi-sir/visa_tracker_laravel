@@ -9,16 +9,13 @@ class WebsiteStatusLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'website_id',
-        'status',
-        'checked_at'
-    ];
+    protected $fillable = ['website_id', 'status', 'checked_at'];
 
     protected $casts = [
         'status' => 'boolean',
-        'checked_at' => 'datetime'
+        'checked_at' => 'datetime',
     ];
+
 
     public function website()
     {
