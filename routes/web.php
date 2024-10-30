@@ -1,11 +1,15 @@
 <?php
 
+use App\Events\BroadcastSiteStatusToUser;
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Middleware\TelegramAuthenticated;
+use App\Models\Website;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
@@ -33,6 +37,10 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/auth/telegram', [AuthenticateController::class, 'callback'])->name('telegram.callback');
 Route::get('/auth-page', [AuthenticateController::class, 'login'])->name('telegram.login');
 
+
+
+
+Route::get('test-broadcast', [BroadcastController::class, 'broadcastWebsiteToUsers']);
 
 /*
 |--------------------------------------------------------------------------

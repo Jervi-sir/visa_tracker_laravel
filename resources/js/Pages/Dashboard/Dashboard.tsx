@@ -2,17 +2,23 @@ import { Button } from "@/Components/ui/button";
 import ClientLayout from "../Layout/ClientLayout"
 import { WebsiteCard } from "./WebsiteCard"
 import { WebsitesTable } from "./WebsitesTable"
+import { useWebsites, WebsitesProvider } from "./WebsitesContext";
 
 export default function Page({ websites, openedCount, closedCount }) {
-  const styleTheCounter = (length) => {
-    if(length <= 2) return 'text-green-300';
-    if(length === 3) return 'text-orange-300';
-    if(length === 4) return 'text-orange-300';
-    if(length === 5) return 'text-red-700';
-  }
   return (
     <ClientLayout title="List Tracked Websites">
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <WebsitesProvider initWebsites={websites} initOpenedCount={openedCount} initClosedCount={closedCount} >
+        <Content />
+      </WebsitesProvider>
+    </ClientLayout>
+  )
+}
+
+const Content = () => {
+  const { styleTheCounter, websites, openedCount, closedCount } = useWebsites();
+  return (
+    <>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           {/* <WebsiteCardList websites={websites} /> */}
           <div className="flex auto-rows-min justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -47,7 +53,8 @@ export default function Page({ websites, openedCount, closedCount }) {
             />
           </div>
         </div>
-    </ClientLayout>
+        
+    </>
   )
 }
 

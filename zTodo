@@ -21,4 +21,4 @@
 - do broadcast system to the telegram bot to send notifications
 - do the background task to check the site availability @done
 - responsive table @done
-- 
+- live data when adding or removing the data

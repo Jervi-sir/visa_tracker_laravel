@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\BroadcastSiteStatusToUser;
 use Illuminate\Console\Command;
 
 use App\Models\Website;
@@ -40,10 +41,12 @@ class CheckWebsitesStatus extends Command
 
                     // Notify all users tracking this website
                     foreach ($website->users as $user) {
-                        if ($user->telegram_chat_id) {
+                        if ($user->telegram_id) {
                             Notification::send($user, new WebsiteStatusChanged());
                         }
+                        broadcast(new BroadcastSiteStatusToUser( $website, $user));
                     }
+                    // Broadcast the website status change
                 }
             } catch (\Exception $e) {
                 $this->error("Error checking {$website->url}: {$e->getMessage()}");

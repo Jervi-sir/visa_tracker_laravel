@@ -29,6 +29,7 @@ import { z } from "zod"
 import { router } from "@inertiajs/react";
 import { toast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 export const WebsitesTable = ({ websites, openedCount, closedCount }) => {
   const [selectedWebsite, setSelectedWebsite] = useState({
@@ -47,7 +48,6 @@ export const WebsitesTable = ({ websites, openedCount, closedCount }) => {
     setSelectedWebsite(website);
     setIsDialogOpen(true);
   };
-
 
   const handleDelete = async () => {
     if (selectedWebsite) {
@@ -93,7 +93,7 @@ export const WebsitesTable = ({ websites, openedCount, closedCount }) => {
                   : <span className="text-red-600">Closed</span>
               }</TableCell>
               <TableCell className="hidden md:table-cell">{website.url}</TableCell>
-              <TableCell className="text-right hidden md:table-cell">{website.last_checked_at}</TableCell>
+              <TableCell className="text-right hidden md:table-cell">{formatDateTime(website.last_checked_at)}</TableCell>
               <TableCell className="text-right hidden md:table-cell">{website.latest_status_log}</TableCell>
               <TableCell className="text-right">
                 <Button
