@@ -5,6 +5,7 @@ use App\Helpers\ScraperHelper;
 use App\Helpers\TelegramHelper;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\BroadcastController;
+use App\Http\Controllers\ChargilyPayController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WebsiteController;
@@ -60,6 +61,21 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/auth/telegram', [AuthenticateController::class, 'callback'])->name('telegram.callback');
 Route::get('/login-with-telegram', [AuthenticateController::class, 'login'])->name('telegram.login');
 Route::get('test-broadcast', [BroadcastController::class, 'broadcastWebsiteToUsers']);
+
+/*
+|--------------------------------------------------------------------------
+| Payment Controller
+|--------------------------------------------------------------------------
+*/
+// Route::middleware([TelegramAuthenticated::class])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('chargilypay/redirect', [ChargilyPayController::class, "redirect"])->name("chargilypay.redirect");
+    Route::get('chargilypay/back', [ChargilyPayController::class, "back"])->name("chargilypay.back");
+    Route::post('chargilypay/webhook', [ChargilyPayController::class, "webhook"])->name("chargilypay.webhook_endpoint");
+});
+
+
+
 
 /*
 |--------------------------------------------------------------------------

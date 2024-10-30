@@ -5,6 +5,8 @@ export interface User {
     email_verified_at?: string;
     photo_url?: string,
     username?: string,
+    current_payment_date?: Date,
+    is_subscribed: boolean,
 }
 
 export type PageProps<

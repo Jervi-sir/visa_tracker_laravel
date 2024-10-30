@@ -25,6 +25,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+
+            $table->dateTime('current_payment_date')->nullable();
+            $table->boolean('is_subscribed')->default(false);
+
             $table->rememberToken();
             $table->timestamps();
         });

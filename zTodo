@@ -10,8 +10,8 @@
 - handle if user reached the limit @done
 - delete website @done
 - make the dashboard responsive with the updated data @done
-- subscription page
-- manage subscription
+- subscription page @done
+- manage subscription @done
 - authenticate @done
 - authenticate with telegram @done
 - show user data @done
