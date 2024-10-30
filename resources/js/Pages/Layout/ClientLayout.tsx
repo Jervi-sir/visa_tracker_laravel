@@ -5,10 +5,10 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/Components/ui/collapsible"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Separator } from "@/Components/ui/separator"
-import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, Command, CreditCard, Folder, LogOut, MoreHorizontal, Share, Sparkles, SquareTerminal, Trash2, User, User2, } from "lucide-react"
+import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, Command, CreditCard, Folder, Loader, Loader2, LogOut, MoreHorizontal, Share, Sparkles, SquareTerminal, Trash2, User, User2, } from "lucide-react"
 import { BookOpen, Bot, Frame, LifeBuoy, Map, PieChart, Send, Settings2, } from "lucide-react"
-import { usePage } from "@inertiajs/react"
-import { useEffect } from "react"
+import { Link, usePage } from "@inertiajs/react"
+import { useEffect, useState } from "react"
 import { Toaster } from "@/Components/ui/toaster"
 import { ToastProvider } from "@/Components/ui/toast"
 
@@ -156,7 +156,7 @@ const Content = ({ children, title = '' }) => {
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage
-                        src={auth.user.email}
+                        src={auth.user.photo_url}
                         alt={auth.user.name}
                       />
                       <AvatarFallback className="rounded-lg"><User size={18} /></AvatarFallback>
@@ -166,7 +166,7 @@ const Content = ({ children, title = '' }) => {
                         {auth.user.name}
                       </span>
                       <span className="truncate text-xs">
-                        {auth.user.email}
+                        {auth.user.email ? auth.user.email : auth.user.username}
                       </span>
                     </div>
                     <ChevronsUpDown className="ml-auto size-4" />
@@ -182,7 +182,7 @@ const Content = ({ children, title = '' }) => {
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                       <Avatar className="h-8 w-8 rounded-lg">
                         <AvatarImage
-                          src={auth.user.email}
+                          src={auth.user.photo_url}
                           alt={auth.user.name}
                         />
                         <AvatarFallback className="rounded-lg">
@@ -194,7 +194,7 @@ const Content = ({ children, title = '' }) => {
                           {auth.user.name}
                         </span>
                         <span className="truncate text-xs">
-                          {auth.user.email}
+                          {auth.user.email ? auth.user.email : auth.user.username}
                         </span>
                       </div>
                     </div>
@@ -212,8 +212,7 @@ const Content = ({ children, title = '' }) => {
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <LogOut />
-                    Log out
+                    <LogoutButton />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -243,5 +242,30 @@ const Content = ({ children, title = '' }) => {
       </SidebarInset>
     </>
 
+  )
+}
+
+const LogoutButton = () => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  return (
+    <>
+      
+      <Link
+        href={route('logout')}
+        method="post"
+        as="button"
+        onClick={() => setIsLoggingOut(true)}
+        className="flex items-center gap-2"
+      >
+        {
+          isLoggingOut
+          ?
+          <Loader2 size={15} className="animate-spin" />
+          :
+          <LogOut size={15} />
+        }
+        Log Out
+      </Link>
+    </>
   )
 }

@@ -13,12 +13,12 @@
 - subscription page
 - manage subscription
 - authenticate @done
-- authenticate with telegram
+- authenticate with telegram @done
 - show user data @done
-  - change password if i wont use telegram auth
+  - change password if i wont use telegram auth @done
 
 - do broadcast system with the website
 - do broadcast system to the telegram bot to send notifications
 - do the background task to check the site availability @done
-- responsive table
+- responsive table @done
 - 
