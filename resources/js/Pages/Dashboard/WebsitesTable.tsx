@@ -52,6 +52,7 @@ export const WebsitesTable = ({ websites, openedCount, closedCount }) => {
   const handleDelete = async () => {
     if (selectedWebsite) {
       await router.delete(route("websites.destroy", { id: selectedWebsite.id }), {
+        preserveState: false, // Add this line
         onSuccess: () => {
           toast({
             title: "Website deleted",
@@ -299,6 +300,7 @@ const CreateWebsiteForm = ({ onCreated = null }) => {
     setIsSubmitting(true)
 
     router.post(route('websites.store'), data, {
+      preserveState: false, // Add this line
       onSuccess: () => {
         toast({
           title: "Website has been added to tracking.",
@@ -309,7 +311,7 @@ const CreateWebsiteForm = ({ onCreated = null }) => {
           ),
 
         })
-        onCreated();
+        onCreated();    // To hide the modal
         form.reset()
       },
       onError: (errors) => {

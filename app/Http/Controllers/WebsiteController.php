@@ -95,11 +95,13 @@ class WebsiteController extends Controller
                     ]);
                 });
             }
+
     
             return redirect()->route('websites.list')
                 ->with('success', 'Website added successfully.');
                 
         } catch (\Exception $e) {
+            dd($e);
             return back()->withErrors(['Failed to add website. Please try again.']);
         }
     
