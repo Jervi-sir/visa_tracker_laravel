@@ -37,20 +37,38 @@ class WebsiteController extends Controller
         $openedCount = $websites->where('is_online', true)->count();
         $closedCount = $websites->where('is_online', false)->count();
 
+        // Get IDs of user's tracked websites to exclude them
+        $trackedWebsiteIds = $websites->pluck('id')->toArray();
+
+        // Get all website for the dropdown
+        $data['allWebsites'] = Website::where('confirmed', true)->whereNotIn('id', $trackedWebsiteIds)
+            ->orderBy('name')
+            ->get()
+            ->map(function ($website) {
+                return [
+                    'id' => $website->id,
+                    'name' => $website->name,
+                    'url' => $website->url,
+                    'is_online' => $website->is_online,
+                    'last_checked_at' => $website->last_checked_at,
+                    'latest_status_log' => optional($website->statusLogs->first())->status ?? null, // Latest status log
+                ];
+            });
 
         return Inertia::render('Dashboard/Dashboard', [
             'websites' => $websites,
             'openedCount' => $openedCount,
             'closedCount' => $closedCount,
+            'allWebsites' => $data['allWebsites']
         ]);
     }
 
-    public function create()
+    public function suggest()
     {
-        return Inertia::render('Dashboard/CreateTracker');
+        return Inertia::render('SuggestWebsites/SuggestWebsites');
     }
 
-    public function store(Request $request)
+    public function storeSuggestion(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|min:2|max:255',
@@ -66,6 +84,46 @@ class WebsiteController extends Controller
             $website = Website::where('url', $validated['url'])->first();
     
             if ($website) {
+                return back()
+                    ->withErrors(['This Website is Already registered.']);
+            } else {
+                // Website doesn't exist, create it and attach to user
+                DB::transaction(function () use ($request, $validated) {
+                    $website = Website::create([
+                        'url' => $validated['url'],
+                        'name' => $validated['name'],
+                        'is_online' => false,
+                    ]);
+                });
+            }
+    
+            return redirect()->route('websites.suggest')
+                ->with('success', 'Website added successfully.');
+                
+        } catch (\Exception $e) {
+            dd($e);
+            return back()->withErrors(['Failed to add website. Please try again.']);
+        }
+    
+
+    }
+
+
+    public function track(Request $request)
+    {
+        $validated = $request->validate([
+            'websiteId' => 'required',
+        ]);
+        // Check if user has reached the limit of websites
+        if (auth()->user()->websites()->count() >= 5) {
+            return back()->withErrors(['Maximum 5 websites allowed, Please Upgrade.']);
+        }
+
+        try {
+            // First check if website exists in the websites table
+            $website = Website::find($request->websiteId);
+    
+            if ($website) {
                 // Check if user already tracks this website
                 $existingPivot = DB::table('user_websites')
                     ->where('user_id', auth()->id())
@@ -79,19 +137,13 @@ class WebsiteController extends Controller
     
                 // Website exists but user doesn't track it yet
                 auth()->user()->websites()->attach($website->id, [
-                    'website_name' => $validated['name']
+                    'website_name' => $website->name
                 ]);
             } else {
                 // Website doesn't exist, create it and attach to user
-                DB::transaction(function () use ($request, $validated) {
-                    $website = Website::create([
-                        'url' => $validated['url'],
-                        'name' => $validated['name'],
-                        'is_online' => false,
-                    ]);
-    
+                DB::transaction(function () use ($request, $validated, $website) {
                     $request->user()->websites()->attach($website->id, [
-                        'website_name' => $validated['name']
+                        'website_name' => $website->name
                     ]);
                 });
             }

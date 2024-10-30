@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticateController extends Controller
 {
     public function login() 
     {
-        return Socialite::driver('telegram')->redirect();
+        return Inertia::render('AuthTelegram');
+        // return Socialite::driver('telegram')->redirect();
     }
     public function callback(Request $request)
     {

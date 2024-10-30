@@ -9,7 +9,7 @@ class Website extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'url', 'is_online', 'last_checked_at'];
+    protected $fillable = ['name', 'url', 'is_online', 'last_checked_at', 'need_scrape'];
 
     protected $casts = [
         'is_online' => 'boolean',

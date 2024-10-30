@@ -26,15 +26,15 @@ const data = {
       isActive: true,
     },
     {
-      title: "Add Website",
-      url: route('websites.createTracker'),
+      title: "Suggest Website",
+      url: route('websites.suggest'),
       icon: Settings2,
     },
   ],
   navSecondary: [
     {
       title: "Subscription",
-      url: "#",
+      url: route('subscription.list'),
       icon: LifeBuoy,
     },
   ],
@@ -133,7 +133,7 @@ const Content = ({ children, title = '' }) => {
               <SidebarMenu>
                 {data.navSecondary.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild size="sm">
+                    <SidebarMenuButton asChild size="sm" isActive={isTabMenuActive(item.url)}>
                       <a href={item.url}>
                         <item.icon />
                         <span>{item.title}</span>

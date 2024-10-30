@@ -11,7 +11,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/Components/ui/form"
 
@@ -54,7 +53,7 @@ export default function Page() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true)
     
-    router.post(route('websites.store'), data, {
+    router.post(route('websites.storeSuggestion'), data, {
       onSuccess: () => {
         toast({
           title: "Website has been added to tracking.",
@@ -96,8 +95,8 @@ export default function Page() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
             <Card className="max-w-[550px]">
               <CardHeader>
-                <CardTitle>Add Tracker</CardTitle>
-                <CardDescription>Keep tracking this website.</CardDescription>
+                <CardTitle>Add Websites</CardTitle>
+                <CardDescription>Suggest us website to add in Tracking List.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
                 {/* Website Name */}

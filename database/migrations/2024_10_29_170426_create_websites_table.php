@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('url')->unique();
             $table->boolean('is_online')->default(false);
-            $table->dateTime('last_checked_at')->nullable();
+            $table->boolean('need_scrape')->default(false);
+            $table->dateTime('last_checked _at')->nullable();
+            
+            $table->string('used_function')->nullable();
+            $table->boolean('confirmed')->default(false);
             $table->timestamps();
         });
     }

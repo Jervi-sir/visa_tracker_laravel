@@ -4,10 +4,15 @@ import { WebsiteCard } from "./WebsiteCard"
 import { WebsitesTable } from "./WebsitesTable"
 import { useWebsites, WebsitesProvider } from "./WebsitesContext";
 
-export default function Page({ websites, openedCount, closedCount }) {
+export default function Page({ websites, openedCount, closedCount, allWebsites }) {
   return (
     <ClientLayout title="List Tracked Websites">
-      <WebsitesProvider initWebsites={websites} initOpenedCount={openedCount} initClosedCount={closedCount} >
+      <WebsitesProvider
+        initWebsites={websites}
+        initOpenedCount={openedCount}
+        initClosedCount={closedCount}
+        initAllWebsites={allWebsites}
+      >
         <Content />
       </WebsitesProvider>
     </ClientLayout>

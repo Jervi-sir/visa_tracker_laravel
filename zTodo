@@ -18,7 +18,13 @@
   - change password if i wont use telegram auth @done
 
 - do broadcast system with the website @done
-- do broadcast system to the telegram bot to send notifications
+- do broadcast system to the telegram bot to send notifications @done
 - do the background task to check the site availability @done
 - responsive table @done
 - live data when adding or removing the data @done
+- add a login page @done
+
+- add scrapable feature in the website @done
+  - add website, but as suggestion @done
+  - change the add new site with a dropdown @done
+- scraper website example @done

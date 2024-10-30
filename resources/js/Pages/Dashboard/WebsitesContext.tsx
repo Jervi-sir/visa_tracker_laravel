@@ -5,10 +5,12 @@ import { usePage } from '@inertiajs/react';
 const WebsitesContext = createContext(null);
 const notificationSoundUrl = '/audio/notification-6.mp3'; 
 
-export const WebsitesProvider = ({ children, initWebsites, initOpenedCount, initClosedCount }) => {
+export const WebsitesProvider = ({ children, initWebsites, initOpenedCount, initClosedCount, initAllWebsites }) => {
   const [websites, setWebsites] = useState(initWebsites);
   const [openedCount, setOpenedCount] = useState(initOpenedCount);
   const [closedCount, setClosedCount] = useState(initClosedCount);
+  const [allWebsites, setAllWebsites] = useState(initAllWebsites);
+  
   const { auth } = usePage().props;
 
   const styleTheCounter = (length) => {

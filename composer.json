@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
         "inertiajs/inertia-laravel": "^1.0",
+        "laravel-notification-channels/telegram": "^5.0",
         "laravel/framework": "^11.9",
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
@@ -14,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "opcodesio/log-viewer": "^3.11",
         "socialiteproviders/telegram": "^4.1",
+        "symfony/dom-crawler": "^7.1",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
@@ -31,7 +34,11 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/TelegramHelper.php",
+            "app/Helpers/ScraperHelper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

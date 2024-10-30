@@ -42,4 +42,8 @@ return [
         'redirect' => env('TELEGRAM_REDIRECT_URI'),
     ],
 
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_TOKEN')
+    ],
+
 ];
