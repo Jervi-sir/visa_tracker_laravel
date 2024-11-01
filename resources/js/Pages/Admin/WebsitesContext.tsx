@@ -3,7 +3,6 @@ import { useLaravelEcho } from '@/utils/LaravelEchoSocket';
 import { usePage } from '@inertiajs/react';
 
 const WebsitesContext = createContext(null);
-const notificationSoundUrl = '/audio/notification-6.mp3'; 
 
 export const WebsitesProvider = ({ children, initWebsites, initOpenedCount, initClosedCount, initConfirmedCount, initUnconfirmedCount, initPagination }) => {
   const [websites, setWebsites] = useState(initWebsites);
