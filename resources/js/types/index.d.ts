@@ -7,6 +7,7 @@ export interface User {
     username?: string,
     current_payment_date?: Date,
     is_subscribed: boolean,
+    has_notifications: boolean,
 }
 
 export type PageProps<
@@ -14,5 +15,6 @@ export type PageProps<
 > = T & {
     auth: {
         user: User;
+        bruh: boolean
     };
 };

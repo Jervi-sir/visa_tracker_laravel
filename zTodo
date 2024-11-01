@@ -28,3 +28,9 @@
   - add website, but as suggestion @done
   - change the add new site with a dropdown @done
 - scraper website example @done
+- add a notification tab for users @done
+  - notifcation list @done
+- add admin side @done
+  - list websites @done
+  - approve website @done
+    - notify users that new website is approved @done

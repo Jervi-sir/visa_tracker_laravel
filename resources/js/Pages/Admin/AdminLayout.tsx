@@ -5,15 +5,41 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/Components/ui/collapsible"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Separator } from "@/Components/ui/separator"
-import { ArrowDownFromLineIcon, BadgeCheck, Bell, BellDot, BellIcon, ChevronRight, ChevronsUpDown, Command, CreditCard, DoorClosed, Folder, Loader, Loader2, LogOut, MoreHorizontal, Share, Sparkles, SquareTerminal, Trash2, User, User2, } from "lucide-react"
+import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, Command, CreditCard, DoorClosed, Folder, Loader, Loader2, LogOut, MoreHorizontal, Settings, Share, Sparkles, SquareTerminal, Trash2, User, User2, } from "lucide-react"
 import { BookOpen, Bot, Frame, LifeBuoy, Map, PieChart, Send, Settings2, } from "lucide-react"
 import { Link, usePage } from "@inertiajs/react"
 import { useEffect, useState } from "react"
 import { Toaster } from "@/Components/ui/toaster"
 import { ToastProvider } from "@/Components/ui/toast"
 
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  navMain: [
+    {
+      title: "List Websites",
+      url: route('admin.listWebsites'),
+      icon: SquareTerminal,
+      isActive: true,
+    },
+    {
+      title: "Suggest Website",
+      url: route('admin.suggestWebsite'),
+      icon: Settings,
+      isActive: true,
+    },
+    {
+      title: "Go to main site",
+      url: route('websites.list'),
+      icon: DoorClosed,
+    },
+  ],
+}
 
-export default function ClientLayout({ children, title = '' }) {
+export default function AdminLayout({ children, title = '' }) {
 
 
   return (
@@ -28,33 +54,6 @@ export default function ClientLayout({ children, title = '' }) {
 const Content = ({ children, title = '' }) => {
   const { url } = usePage();
   const { auth } = usePage().props;
-  
-  const navData = {
-    navMain: [
-      {
-        title: "List Websites",
-        url: route('websites.list'),
-        icon: SquareTerminal,
-      },
-      {
-        title: "Suggest Website",
-        url: route('websites.suggest'),
-        icon: Settings2,
-      },
-      {
-        title: "Notifications",
-        url: route('websites.notifications'),
-        icon: auth.user.has_notifications ? BellDot :BellIcon,
-      },
-    ],
-    navSecondary: [
-      {
-        title: "Subscription",
-        url: route('subscription.list'),
-        icon: CreditCard,
-      },
-    ],
-  }
 
   const isTabMenuActive = (route) => {
     return route.includes(url);
@@ -70,12 +69,12 @@ const Content = ({ children, title = '' }) => {
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild>
                 <a href="#">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-accent text-sidebar-primary-foreground">
                     <Command className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">Visa Tracker</span>
-                    <span className="truncate text-xs">Enterprise</span>
+                    <span className="truncate text-xs">Admin</span>
                   </div>
                 </a>
               </SidebarMenuButton>
@@ -86,46 +85,46 @@ const Content = ({ children, title = '' }) => {
           <SidebarGroup>
             <SidebarGroupLabel>Trackers</SidebarGroupLabel>
             <SidebarMenu>
-              {navData.navMain.map((item: any) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title} isActive={isTabMenuActive(item.url)}>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-              
-              {
-                auth.bruh
-                &&
-                <SidebarMenuItem >
-                  <SidebarMenuButton asChild tooltip={'admin'} >
-                    <Link href={route('admin.listWebsites')}>
-                      <DoorClosed />
-                      <span>Go to admin</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              }
-            </SidebarMenu>
-          </SidebarGroup>
-          <SidebarGroup className="mt-auto">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {navData.navSecondary.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild size="sm" isActive={isTabMenuActive(item.url)}>
+              {data.navMain.map((item: any) => (
+                <Collapsible
+                  key={item.title}
+                  asChild
+                  defaultOpen={item.isActive}
+                >
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip={item.title} isActive={isTabMenuActive(item.url)}>
                       <a href={item.url}>
                         <item.icon />
                         <span>{item.title}</span>
                       </a>
                     </SidebarMenuButton>
+                    {item.items?.length ? (
+                      <>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuAction className="data-[state=open]:rotate-90">
+                            <ChevronRight />
+                            <span className="sr-only">Toggle</span>
+                          </SidebarMenuAction>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {item.items?.map((subItem) => (
+                              <SidebarMenuSubItem key={subItem.title}>
+                                <SidebarMenuSubButton asChild>
+                                  <a href={subItem.url}>
+                                    <span>{subItem.title}</span>
+                                  </a>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </>
+                    ) : null}
                   </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
+                </Collapsible>
+              ))}
+            </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
@@ -182,20 +181,6 @@ const Content = ({ children, title = '' }) => {
                       </div>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Link
-                        href={route('subscription.list')}
-                        as="button"
-                        className="flex items-center gap-2"
-                      >
-                        <CreditCard size={15} />
-                        Subscription
-                      </Link>
-                      
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <LogoutButton />

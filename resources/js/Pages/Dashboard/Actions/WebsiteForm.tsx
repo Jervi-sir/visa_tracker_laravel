@@ -45,6 +45,7 @@ export const WebsiteForm = ({ website, onDelete }) => {
   }, [website, form]);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    return;
     setIsSubmitting(true)
 
     router.post(route('websites.update', { id: website.id }), data, {

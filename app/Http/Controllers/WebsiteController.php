@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserNotification;
 use App\Models\UserWebsite;
 use App\Models\Website;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class WebsiteController extends Controller
                 // 'name' => $website->name,
                 'id' => $website->id,
                 'pivot_id' => $website->pivot->id,
-                'name' => $website->pivot->website_name, // From pivot table
+                // 'name' => $website->pivot->website_name, // From pivot table
+                'name' => $website->name,
                 'url' => $website->url,
                 'is_online' => $website->is_online,
                 'last_checked_at' => $website->last_checked_at,
@@ -75,9 +77,9 @@ class WebsiteController extends Controller
             'url' => 'required|url|max:255',
         ]);
         // Check if user has reached the limit of websites
-        if (auth()->user()->websites()->count() >= 5) {
-            return back()->withErrors(['Maximum 5 websites allowed, Please Upgrade.']);
-        }
+        // if (auth()->user()->websites()->count() >= 5) {
+        //     return back()->withErrors(['Maximum 5 websites allowed, Please Upgrade.']);
+        // }
 
         try {
             // First check if website exists in the websites table
@@ -101,11 +103,8 @@ class WebsiteController extends Controller
                 ->with('success', 'Website added successfully.');
                 
         } catch (\Exception $e) {
-            dd($e);
             return back()->withErrors(['Failed to add website. Please try again.']);
         }
-    
-
     }
 
 
@@ -215,6 +214,39 @@ class WebsiteController extends Controller
             return back()->withErrors( ['Failed to update website. Please try again.']);
         }
     
+    }
+
+
+    public function listNotifications(Request $request)
+    {
+        $auth = Auth::user();
+        $auth->has_notifications = false;
+        $auth->save();
+        
+        $paginatedNotifications = UserNotification::where('user_id', $auth->id)->orderByDesc('id')->paginate(10);
+        
+        // Transform the collection within the paginated data
+        $paginatedNotifications->getCollection()->transform(function ($notification) {
+            return [
+                'content' => $notification->content,
+                'created_at' => $notification->created_at,
+            ];
+        });
+
+        // Pagination
+        $pagination = [
+            'total' => $paginatedNotifications->total(),
+            'current_page' => $paginatedNotifications->currentPage(),
+            'last_page' => $paginatedNotifications->lastPage(),
+            'next_page' => $paginatedNotifications->currentPage() + 1 <= $paginatedNotifications->lastPage() ? $paginatedNotifications->currentPage() + 1 : null,
+            'prev_page' => $paginatedNotifications->currentPage() - 1 >= 1 ? $paginatedNotifications->currentPage() - 1 : null,
+        ];
+        
+
+        return Inertia::render('Notification/ListNotifications', [
+            'notifications' => $paginatedNotifications->items(),
+            'pagination' => $pagination,
+        ]);
     }
 
 }
