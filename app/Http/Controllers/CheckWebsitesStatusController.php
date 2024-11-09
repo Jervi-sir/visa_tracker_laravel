@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Http\Controllers;
 
-use App\Events\BroadcastSiteStatusToUser;
 use App\Helpers\ScraperHelper;
 use App\Helpers\TelegramHelper;
-use App\Models\BackgroundTask;
-use Illuminate\Console\Command;
-
+use Illuminate\Http\Request;
+use App\Events\BroadcastSiteStatusToUser;
 use App\Models\Website;
+use App\Notifications\WebsiteStatusChanged;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 
-class CheckWebsitesStatus extends Command
+class CheckWebsitesStatusController extends Controller
 {
-    protected $signature = 'websites:check-status';
-    protected $description = 'Check status of all tracked websites';
-
-    public function handle()
+    public function CheckStatutes(Request $request)
     {
         $websites = Website::has('users')->get();
         foreach ($websites as $index => $website) {
@@ -27,11 +24,6 @@ class CheckWebsitesStatus extends Command
                     $isOnline = $response->successful();
                 } catch (\Exception $e) {
                     $isOnline = false;
-                    BackgroundTask::create([
-                        "name" => "try catch of timeout",
-                        "status" => "timeout",
-                        "message" => "Error checking {$website->url}: {$e->getMessage()}"
-                    ]);
                 }
                 
                 // if is online
@@ -66,24 +58,13 @@ class CheckWebsitesStatus extends Command
                         $telegramBot->sendMessage($user->telegram_id, $website->name . ' is available Now, via link ' . $website->url);
                     }
                     // Broadcast the website status change
-                    if(env('ENABLE_REVERB')) {
-                        broadcast(new BroadcastSiteStatusToUser( $website, $user));
-                    }
+                    broadcast(new BroadcastSiteStatusToUser( $website, $user));
                 }
-                BackgroundTask::create([
-                    "name" => "checked",
-                    "status" => "success",
-                    "message" => "{$website->url}"
-                ]);
+
             } catch (\Exception $e) {
-                BackgroundTask::create([
-                    "name" => "try catch parent",
-                    "status" => "error",
-                    "message" => "Error checking {$website->url}: {$e->getMessage()}"
-                ]);
-                $this->error("Error checking {$website->url}: {$e->getMessage()}");
+                dd($e);
+                // $this->error("Error checking {$website->url}: {$e->getMessage()}");
             }
         }
     }
-
 }

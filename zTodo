@@ -1,36 +1,21 @@
-- create necessary databse @done
-- create necessary relationships @done
-- dashboard @done
-  - list table @done
-  - list status @done
-  - list card of websites @done
-
-- create new website @done
-- handle if website already exists @done
-- handle if user reached the limit @done
-- delete website @done
-- make the dashboard responsive with the updated data @done
-- subscription page @done
-- manage subscription @done
-- authenticate @done
-- authenticate with telegram @done
-- show user data @done
-  - change password if i wont use telegram auth @done
-
-- do broadcast system with the website @done
-- do broadcast system to the telegram bot to send notifications @done
-- do the background task to check the site availability @done
-- responsive table @done
-- live data when adding or removing the data @done
-- add a login page @done
-
-- add scrapable feature in the website @done
-  - add website, but as suggestion @done
-  - change the add new site with a dropdown @done
-- scraper website example @done
-- add a notification tab for users @done
-  - notifcation list @done
-- add admin side @done
-  - list websites @done
-  - approve website @done
-    - notify users that new website is approved @done
+- Functions to test @done
+  - auth @done
+    - login with breeze @done
+    - logout @done
+    - continue with Telegram
+  - delete website @done
+  - add website @done
+  - get notifications @done
+  - suggest website @done
+  - background task @done
+    - send notification to website @done
+    - send notification with telegram @done
+  
+  - check if notification will still work even after deleting the tracking @done
+  
+  - test queues @done
+  
+  - subscription @done
+    - pay with Chargily
+    - pay with Stripe
+  

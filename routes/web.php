@@ -1,13 +1,16 @@
 <?php
 
+use App\Console\Commands\CheckWebsitesStatus;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\ChargilyPayController;
+use App\Http\Controllers\CheckWebsitesStatusController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\MultiAuthMiddleware;
 use Illuminate\Support\Facades\Route;
+use Laravel\Reverb\Protocols\Pusher\Http\Controllers\HealthCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +86,9 @@ Route::prefix('admin')->middleware([MultiAuthMiddleware::class, AdminMiddleware:
 | Testing
 |--------------------------------------------------------------------------
 */
+
+Route::get('test-check-websites-statuses', [CheckWebsitesStatusController::class, 'CheckStatutes']);
+
 // Route::get('test-broadcast', [BroadcastController::class, 'broadcastWebsiteToUsers']);
 
 // Route::get('/send-telegram', function() {

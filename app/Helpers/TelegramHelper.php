@@ -17,19 +17,17 @@ class TelegramHelper
         $this->url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
     }
 
-    public function sendMessage(int $userId, string $message): bool
+    public function sendMessage(int $telegram_id, string $message): bool
     {
-        $user = User::find($userId);
-        
-        if (!$user || !$user->telegram_id) {
-            Log::error("User not found or no Telegram ID.", ['user_id' => $userId]);
+        if (!$telegram_id) {
+            Log::error("User not found or no Telegram ID.", ['user_id' => User::where('telegram_id', $telegram_id)->first()]);
             return false;
         }
 
         $response = Http::post($this->url, [
-            'chat_id' => $user->telegram_id,
+            'chat_id' => $telegram_id,
             'text' => $message,
-            'parse_mode' => 'Markdown', // Optional: allows for bold/italic formatting
+            'parse_mode' => 'Markdown',
         ]);
 
         // Check the response status
@@ -40,7 +38,7 @@ class TelegramHelper
             Log::error('Telegram sendMessage error', [
                 'status' => $response->status(),
                 'body' => $response->body(),
-                'telegram_id' => $user->telegram_id,
+                'telegram_id' => $telegram_id,
             ]);
             return false; // Failed to send message
         }
